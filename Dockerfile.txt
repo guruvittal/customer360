@@ -1,0 +1,27 @@
+FROM python:3.9-slim
+ 
+# RUN apt-get update -y
+# RUN apt-get install -y python-pip
+ 
+COPY . /supplychaingraph
+ 
+# Create and change to the app directory.
+WORKDIR /supplychaingraph
+ 
+RUN chmod 444 main.py
+RUN chmod 444 requirements.txt
+ 
+#RUN pip install -r requirements.txt
+#RUN pip install gradio>=3.36.1
+RUN pip install -r requirements.txt
+ 
+# Service must listen to $PORT environment variable.
+# This default value facilitates local development.
+EXPOSE 8080
+ 
+# --------------- Export envirennement variable ---------------
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+cMD ["streamlit", "run", "--server.port", "8080", "--server.enableCORS=false", "main.py"]
+
